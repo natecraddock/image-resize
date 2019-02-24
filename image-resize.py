@@ -17,7 +17,7 @@ import argparse
 
 # Array of possible output sizes
 sizes = [(8192, 8192), (4096, 4096), (2048, 2048), (1024, 1024)]
-size_map = {8192:"8k", 4096:"4k", 2048:"2k", 1024:"1k"}
+size_map = {8192:"8K", 4096:"4K", 2048:"2K", 1024:"1K"}
 image_types = ["ALB", "AO", "DIF", "DIS", "NOR", "OPA", "ROU"]
 formats = ['png', 'jpeg']
 
