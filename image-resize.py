@@ -76,7 +76,7 @@ def resize_image(im, path, name, format, sizes):
 		print("Writing", out_path)
 
 		if format == "jpeg":
-			temp.save(out_path, format, quality=100)
+			temp.save(out_path, format, quality=90)
 		else:
 			temp.save(out_path, format)
 
