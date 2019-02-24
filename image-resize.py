@@ -57,7 +57,10 @@ def resize_image(im, path, name, format, sizes):
 
 	for size in sizes:
 		# Create size subfolder
-		image_output = path + os.sep + format + os.sep + size_map[size[0]]
+		if format == "jpeg":
+			image_output = path + os.sep + "JPG" + os.sep + size_map[size[0]]
+		else:
+			image_output = path + os.sep + format.upper() + os.sep + size_map[size[0]]
 		if not os.path.exists(image_output):
 			os.makedirs(image_output)
 			
@@ -70,7 +73,11 @@ def resize_image(im, path, name, format, sizes):
 				name_suffix = name_suffix + size_map[size[0]] + '_' + s
 
 		# Get path of output
-		image_name = name_suffix + '.' + format
+		if format == "jpeg":
+			image_name = name_suffix + '.jpg'
+		else:
+			image_name = name_suffix + '.' + format
+
 		out_path = os.path.join(image_output, image_name)
 
 		print("Writing", out_path)
