@@ -48,7 +48,7 @@ def check_out_path(out_path):
 		os.mkdir(out_path)
 
 
-def resize_image(im, path, name, format, sizes):
+def resize_image(im, in_path, path, name, format, sizes):
 	# Create a copy
 	temp = im.copy()
 
@@ -85,7 +85,11 @@ def resize_image(im, path, name, format, sizes):
 		if format == "jpeg":
 			temp.save(out_path, format, quality=90)
 		else:
-			temp.save(out_path, format)
+			if size[0] == 8192:
+				print("This is a copy")
+				shutil.copy2(in_path, out_path)
+			else:
+				temp.save(out_path, format)
 
 
 def resize_images(path, out_path):
@@ -98,7 +102,7 @@ def resize_images(path, out_path):
 		im = Image.open(image_path)
 
 		for format in formats:
-			resize_image(im, out_path, image_name_base, format, sizes)
+			resize_image(im, image_path, out_path, image_name_base, format, sizes)
 
 
 for dir in dirs:
