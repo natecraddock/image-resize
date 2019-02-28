@@ -13,6 +13,7 @@ import os
 import shutil
 import sys
 import argparse
+import zipfile
 
 
 # Array of possible output sizes
@@ -33,6 +34,7 @@ suffixes = args.s
 if suffixes:
 	suffixes = suffixes.split(' ')
 
+basename = ""
 
 def remove_suffix():
 	pass
@@ -58,11 +60,12 @@ def resize_image(im, in_path, path, name, format, sizes):
 	for size in sizes:
 		# Create size subfolder
 		if format == "jpeg":
-			image_output = path + os.sep + "JPG" + os.sep + size_map[size[0]]
+			folder_output = path + os.sep + "JPG" + os.sep + basename + " " + size_map[size[0]]
 		else:
-			image_output = path + os.sep + format.upper() + os.sep + size_map[size[0]]
-		if not os.path.exists(image_output):
-			os.makedirs(image_output)
+			folder_output = path + os.sep + format.upper() + os.sep + basename + " " + size_map[size[0]]
+		if not os.path.exists(folder_output):
+			os.makedirs(folder_output)
+		#print(folder_output)
 			
 		temp.thumbnail(size)
 
@@ -78,7 +81,7 @@ def resize_image(im, in_path, path, name, format, sizes):
 		else:
 			image_name = name_suffix + '.' + format
 
-		out_path = os.path.join(image_output, image_name)
+		out_path = os.path.join(folder_output, image_name)
 
 		print("Writing", out_path)
 
@@ -86,11 +89,20 @@ def resize_image(im, in_path, path, name, format, sizes):
 			temp.save(out_path, format, quality=90)
 		else:
 			if size[0] == 8192:
-				print("This is a copy")
 				shutil.copy2(in_path, out_path)
 			else:
 				temp.save(out_path, format)
 
+		# zip folder
+		z = zipfile.ZipFile(folder_output + ".zip", 'a')
+		for image in os.listdir(folder_output):
+			z.write(os.path.join(folder_output, image), basename + " " + size_map[size[0]] + os.sep + image)
+		z.close()
+
+		# remove folder
+		shutil.rmtree(folder_output)
+
+	print()
 
 def resize_images(path, out_path):
 	for image_name in os.listdir(path):
@@ -109,5 +121,8 @@ for dir in dirs:
 	print("Reading images from", dir)
 	out_path = dir + "_resized"
 	check_out_path(out_path)
+
+	basename = os.path.basename(dir)
+	print("Basename:", basename)
 
 	resize_images(dir, out_path)
