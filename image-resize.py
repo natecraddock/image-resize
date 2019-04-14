@@ -20,12 +20,12 @@ import zipfile
 sizes = [(8192, 8192), (4096, 4096), (2048, 2048), (1024, 1024)]
 size_map = {8192:"8K", 4096:"4K", 2048:"2K", 1024:"1K"}
 image_types = ["ALB", "AO", "DIF", "DIS", "NOR", "OPA", "ROU"]
-formats = ['png', 'jpeg']
 
 # Parse input
 parser = argparse.ArgumentParser(description='Batch-resize a directory of image files')
 parser.add_argument('directories', help='a list of directory paths of images to resize', nargs='+')
 parser.add_argument('-s', help='list of space delimited suffixes to keep at end of output filenames')
+parser.add_argument('-f', help='comma-separated list of output formats [-f=jpg,png,webp')
 args = parser.parse_args()
 
 dirs = args.directories
@@ -33,6 +33,13 @@ dirs = args.directories
 suffixes = args.s
 if suffixes:
 	suffixes = suffixes.split(' ')
+
+formats = args.f
+if formats:
+	l = formats.rstrip('=')
+	formats = l.split(',')
+else:
+	formats = ['jpeg', 'png']
 
 basename = ""
 
@@ -69,6 +76,7 @@ def resize_image(im, in_path, path, name, format, sizes):
 			
 		temp.thumbnail(size)
 
+		name_suffix = name
 		# Remove suffix, insert size, append suffix
 		for s in image_types:
 			if name.endswith(s):
