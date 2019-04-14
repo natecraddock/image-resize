@@ -95,6 +95,8 @@ def resize_image(im, in_path, path, name, format, sizes):
 
 		if format == "jpeg":
 			temp.save(out_path, format, quality=90)
+		elif format == "webp":
+			temp.save(out_path, format, quality=90)
 		else:
 			if size[0] == 8192:
 				shutil.copy2(in_path, out_path)
