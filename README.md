@@ -12,7 +12,7 @@ image-resize path-to-folder
 # Options
 Here are the various options
 
-`-f comma-separated list of output formats [-f=jpg,png,webp]`
+`-f comma-separated list of output formats [-f=jpeg,png,webp]`
 
 # Installation
 To install run the commands
