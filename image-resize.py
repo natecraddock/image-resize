@@ -4,14 +4,16 @@
 # Nathan Craddock
 # 2019
 
+import sys
+
 try:
 	from PIL import Image
 except:
 	print("PIL not installed... Aborting")
 	sys.exit()
+
 import os
 import shutil
-import sys
 import argparse
 import zipfile
 
@@ -25,7 +27,7 @@ image_types = ["ALB", "AO", "DIF", "DIS", "NOR", "OPA", "ROU"]
 parser = argparse.ArgumentParser(description='Batch-resize a directory of image files')
 parser.add_argument('directories', help='a list of directory paths of images to resize', nargs='+')
 parser.add_argument('-s', help='list of space delimited suffixes to keep at end of output filenames')
-parser.add_argument('-f', help='comma-separated list of output formats [-f=jpg,png,webp')
+parser.add_argument('-f', help='comma-separated list of output formats [-f=jpeg,png,webp]')
 args = parser.parse_args()
 
 dirs = args.directories
@@ -38,6 +40,12 @@ formats = args.f
 if formats:
 	l = formats.rstrip('=')
 	formats = l.split(',')
+
+	if 'jpg' in formats:
+		formats[formats.index('jpg')] = 'jpeg'
+
+	# Ensure no duplicate types
+	formats = set(formats)
 else:
 	formats = ['jpeg', 'png']
 
