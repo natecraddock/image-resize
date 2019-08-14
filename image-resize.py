@@ -124,15 +124,16 @@ def resize_image(im, in_path, path, name, format, sizes):
 
 def resize_images(path, out_path):
 	for image_name in os.listdir(path):
-		image_path = os.path.join(path, image_name)
-		image_name_base = os.path.splitext(image_name)[0]
-		
-		print("Resizing:", image_path)
+		if os.path.isfile(os.path.join(path, image_name)):
+			image_path = os.path.join(path, image_name)
+			image_name_base = os.path.splitext(image_name)[0]
 
-		im = Image.open(image_path)
+			print("Resizing:", image_path)
 
-		for format in formats:
-			resize_image(im, image_path, out_path, image_name_base, format, sizes)
+			im = Image.open(image_path)
+
+			for format in formats:
+				resize_image(im, image_path, out_path, image_name_base, format, sizes)
 
 
 for dir in dirs:
